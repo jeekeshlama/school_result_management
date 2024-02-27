@@ -1,0 +1,40 @@
+﻿@model FiboInfraStructure.Entity.FiboSchool.SessionSetup
+
+@{ Layout = null; }
+
+<form asp-action="ToggleStatus" asp-controller="Session" method="post">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Id)
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">@Model.Status</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+            <p>
+                Are You Sure to
+                @if (Model.IsActive())
+                {
+                    <label style="color:darkred">Disable</label>
+                }
+                else
+                {
+                    <label style="color:green">Enable</label>
+                }
+                ?
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn  btn-secondary" data-dismiss="modal"><i class="ti-close"></i> Cancel</button>
+            @if (Model.IsActive())
+            {
+                <button type="submit" class="btn  btn-danger"><i class="ti-thumb-down"></i> Disable</button>
+            }
+            else
+            {
+                <button type="submit" class="btn  btn-success"><i class="ti-thumb-up"></i> Enable</button>
+            }
+        </div>
+    </div>
+</form>
+

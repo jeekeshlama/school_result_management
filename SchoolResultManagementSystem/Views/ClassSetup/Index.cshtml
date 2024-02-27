@@ -1,0 +1,168 @@
+﻿@model FiboSchool.Src.ViewModel.ClassSetupViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Index";
+    int Sn = 1;
+}
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+         <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="breadcome-list">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="breadcome-heading">
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <ul class="breadcome-menu">
+                                        <li>
+                                            <a href="#">Home</a> <span class="bread-slash">/</span>
+                                        </li>
+                                        <li>
+                                            <span class="bread-blod">Class</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        <div class="sparkline13-list" style="margin-left:90px;">
+            <div class="product-status-wrap drp-lst">
+                <h4>Class List</h4>
+                <div class="add-product">
+                  @*  <a >Add FiscalYear</a>*@
+                </div>
+                <div class="sparkline13-graph">
+                    <div class="datatable-dashv1-list custom-datatable-overright">
+                    <div id="toolbar">
+                        <select class="form-control dt-tb">
+                            <option value="">Export Basic</option>
+                            <option value="all">Export All</option>
+                            <option value="selected">Export Selected</option>
+                        </select>
+                    </div>
+                    <div class="add-product">
+                        <button data-toggle="modal" ClassSetupId="0" data-target="#myModal" class="pd-setting-ed" style="float:right;margin-top:-30px;"><i class="fa fa-plus" data-toggle="tooltip" title="Add" aria-hidden="true">Add Class</i></button>
+                    </div>
+                        <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" @*data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"*@
+                               data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
+                            <thead>
+                                 <tr>
+                                  <th style="text-align:center">S.N</th>
+                                  <th style="text-align:center">Name</th>
+                                  <th style="text-align:center">Setting</th>
+                              </tr>
+                              </thead>
+                              @foreach (var item in Model.ClassSetups)
+                              {
+                                  <tr>
+                                      <td style="text-align:center">@Sn</td>
+                                      <td style="text-align:center">@item.Name</td>
+
+                                      <td style="text-align:center">
+                                          <button ReferenceType="Crud" data-toggle="modal" ClassSetupId="@item.Id" data-target="#myModal" class="pd-setting-ed"><i class="fa fa-pencil-square-o" data-toggle="tooltip" title="Edit" aria-hidden="true"></i></button>
+                                          <button data-toggle="modal" ClassSetupId="@item.Id" data-target="#myModal" class="pd-setting-ed"><i class="fa fa-trash" data-toggle="tooltip" title="Trash" aria-hidden="true"></i></button>
+                                      </td>
+                                  </tr>
+                                  Sn++;
+                              }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<div class="modal bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" id="DeleteBody">
+
+        <!-- /.modal-content -->
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@section Scripts
+{
+    <script type="text/javascript">
+    $("#myModal").on('show.bs.modal', function (e) {
+        const ClassSetupId = $(e.relatedTarget).attr('ClassSetupId');
+            const type = $(e.relatedTarget).attr('ReferenceType');
+        if (ClassSetupId > 0) {
+                if (type == null) {
+                    var url = '@Url.Action("Delete", "ClassSetup")' + "?id=" + ClassSetupId;
+                    $("#DeleteBody").load(url, function () {
+                        $("#myModal").modal('show');
+                    });
+                }
+                else {
+                    var url = '@Url.Action("Update", "ClassSetup")' + "?id=" + ClassSetupId;
+                    $("#DeleteBody").load(url, function () {
+                        $("#myModal").modal('show');
+                    });
+                }
+            }
+            else {
+                var url = '@Url.Action("Create", "ClassSetup")';
+                $("#DeleteBody").load(url, function () {
+                    $("#myModal").modal('show');
+                });
+            }
+        })
+
+    </script>
+
+}
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+    'use strict';
+    $(window).on('load', function () {
+        function notify(message,type) {
+            $.growl({
+                message: message
+            }, {
+                type: type,
+                allow_dismiss: false,
+                label: 'Cancel',
+                className: 'btn-xs btn-inverse',
+                placement: {from: 'top', align: 'right'},
+                delay: 2500,
+                animate: { enter: 'animated rotateIn', exit: 'animated rotateIn'},
+                offset: {x: 30,y: 30}
+            });
+        };
+        notify('@ViewBag.Message','success');
+    });
+    </script>
+}
+
+ 
+
+@if (ViewBag.Messege != null)
+{
+    <script type="text/javascript">
+    'use strict';
+    $(window).on('load', function () {
+        function notify(messege,type) {
+            $.growl({
+                message: messege
+            }, {
+                type: type,
+                allow_dismiss: false,
+                label: 'Cancel',
+                className: 'btn-xs btn-inverse',
+                placement: {from: 'top', align: 'right'},
+                delay: 2500,
+                animate: { enter: 'animated rotateIn', exit: 'animated rotateIn'},
+                offset: {x: 30,y: 30}
+            });
+        };
+        notify('@ViewBag.Messege','danger');
+    });
+    </script>
+}

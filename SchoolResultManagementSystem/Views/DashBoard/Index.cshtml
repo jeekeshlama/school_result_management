@@ -1,0 +1,215 @@
+﻿@model FiboSchool.Src.ViewModel.DashBoardViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "StudentManageMarks";
+    int SN = 1;
+    var performanceList = await _performanceRepo.GetAllPerformanceAsync();
+}
+@using FiboInfraStructure;
+@inject FiboSchool.InfraStructure.Repository.IStudentRepository _studentRepo;
+@inject FiboSchool.InfraStructure.Repository.IPerformanceRepository _performanceRepo;
+
+
+<form class="form-horizontal form-material needs-validation" asp-action="StudentManageMarks" asp-controller="DashBoard" method="get">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-left:90px; width:1100px;">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="breadcome-list">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="breadcome-heading">
+
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sparkline13-list">
+            <div class="sparkline13-hd">
+                <div class="main-sparkline13-hd">
+                    <h1>Marks <span class="table-project-n"></span> List</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12" style=" margin-left: -15px;">
+                    <div class="col-lg-2">
+                        <label for="Year">Class</label><br />
+                        <select asp-for="ClassId" asp-items="Model.ClassSetUpList" class="form-control ClassSetupId" id="ClassSetupId" required>
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="Year">Section</label><br />
+                        <select asp-for="SectionId" asp-items="Model.SectionSetupList" class="form-control SectionSetupId" id="SectionSetupId" required>
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="Year">Term</label><br />
+                        <select asp-for="TermId" asp-items="Model.TermList" class="form-control TermId" id="TermId" required>
+                        </select>
+                    </div>
+                    <div class="col-lg-2" style="text-align:right">
+                        <button type="submit" style="margin-top: 28px;" class="btn  btn-success" id="btnSubmit"><i class="feather mr-2 icon-check-square"></i>Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="sparkline13-graph">
+                <div class="datatable-dashv1-list custom-datatable-overright">
+
+                    <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" @*data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"*@
+                           data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
+                        <thead>
+                            <tr>
+                                <th>S.N</th>
+                                <th>
+                                    Name
+                                </th>
+                                @foreach (var item in Model.SubjectList)
+                                {
+                                    <th>
+                                        @item.SubjectName
+                                    </th>
+                                }
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Average
+                                </th>
+                                <th>
+                                    Percentage
+                                </th>
+                                <th>
+                                    Grade
+                                </th>
+                                <th style="text-align:center;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.StudentList)
+                            {
+                                //var student = await _studentRepo.GetByIdAsync((long)item.StudentId);
+
+                                decimal? sum = 0;
+                                decimal? total = 0;
+                                int countSubject = 0;
+                                decimal? avg = 0;
+                                decimal? fullMarks = 0;
+                                decimal? percent = 0;
+                                <tr>
+                                    <td>@SN</td>
+                                    <td>
+                                        @item.Name
+                                    </td>
+                                    @foreach (var _item in Model.SubjectList)
+                                    {
+                                        sum = 0;
+                                        countSubject++;
+                                        @foreach (var _detail in Model.DetailList)
+                                        {
+                                            fullMarks = _detail.FullMarks.ToDecimal();
+                                            var marks = Model.ManageMarksList.Where(x => x.Id == _detail.ManageMarksId && x.TermId == Model.TermId && x.ClassSetupId == Model.ClassId && x.SubjectId == _item.Id).FirstOrDefault();
+                                            if (marks != null)
+                                            {
+                                                if (_item.Id == marks.SubjectId && _detail.StudentId == item.Id)
+                                                {
+                                                    sum += _detail.ObtainedMarks.ToDecimal();
+                                                }
+                                            }
+                                        }
+                                        if (sum > 0)
+                                        {
+                                            total += sum;
+                                            <td>
+                                                <label>@sum</label>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                            </td>
+                                        }
+
+                                    }
+                                    <td>
+                                        @total
+                                    </td>
+                                    <td>
+                                        @{
+                                            avg = total / countSubject;
+                                        }
+                                        <label>@avg</label>
+                                    </td>
+                                    <td>
+                                        @{
+                                            percent = (total / (fullMarks * countSubject)) * 100;
+                                        }
+                                        <label>@percent</label>
+                                    </td>
+                                    <td>
+                                        @if (percent > 90 && percent < 100)
+                                        {
+                                            <label>A+</label>
+                                        }
+                                        else if (percent > 80 && percent <= 90)
+                                        {
+                                            <label>A</label>
+                                        }
+                                        else if (percent > 70 && percent <= 80)
+                                        {
+                                            <label>B+</label>
+                                        }
+                                        else if (percent > 60 && percent <= 70)
+                                        {
+                                            <label>B</label>
+                                        }
+                                        else if (percent > 50 && percent <= 60)
+                                        {
+                                            <label>C+</label>
+                                        }
+                                        else if (percent > 40 && percent <= 50)
+                                        {
+                                            <label>C</label>
+                                        }
+                                        else if (percent > 20 && percent <= 40)
+                                        {
+                                            <label>D</label>
+                                        }
+                                        else if (percent > 1 && percent <= 20)
+                                        {
+                                            <label>E</label>
+                                        }
+                                        else
+                                        {
+                                            <label>N</label>
+                                        }
+                                    </td>
+                                    <td style="text-align:center;">
+                                        @{
+                                            var performance = performanceList.Where(x => x.StudentId == item.Id && x.TermId == Model.TermId && x.ClassId == Model.ClassId && x.SectionSetupId == Model.SectionId).FirstOrDefault();
+                                            if (performance == null)
+                                            {
+                                                <button type="button" onclick="window.location.href='@Url.Action("Marks", "ManageMarks", new { id=item.Id, classId = Model.ClassId, sectionId= Model.SectionId, termId= Model.TermId })'" class="btn btn-success">Marks</button>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" onclick="window.location.href='@Url.Action("UpdateMarks", "ManageMarks", new { id=item.Id, classId = Model.ClassId, sectionId= Model.SectionId, termId= Model.TermId })'" class="btn btn-primary">Edit Marks</button>
+                                            }
+
+                                        }
+
+                                        <button type="button" onclick="window.location.href='@Url.Action("Result", "ManageMarks", new { id=item.Id, classId = Model.ClassId, sectionId= Model.SectionId, termId= Model.TermId })'" class="btn btn-primary">Result</button>
+                                    </td>
+                                </tr>
+                                SN++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+

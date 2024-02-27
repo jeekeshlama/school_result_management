@@ -1,0 +1,277 @@
+﻿@model FiboSchool.Src.Dto.PerformanceDto
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Marks";
+    int SN = 1;
+    string totalGrade = "";
+    decimal? percent = 0;
+
+    long? classId = 0;
+    long? sectionId = 0;
+    long? termId = 0;
+    long? sessionId = 0;
+    long? studentId = 0;
+
+}
+@using FiboInfraStructure;
+
+@inject FiboSchool.InfraStructure.Repository.IStudentRepository _studentRepo;
+
+
+<form class="form-horizontal form-material needs-validation" asp-action="UpdateMarks" asp-controller="ManageMarks" method="post">
+    @Html.AntiForgeryToken();
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="CreatedBy" />
+    <input type="hidden" asp-for="CreatedDate" />
+    <input type="hidden" asp-for="BranchId" />
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="sparkline13-list">
+            <div class="sparkline13-hd">
+                <div class="main-sparkline13-hd">
+                    <h1>Marks <span class="table-project-n"></span></h1>
+                </div>
+            </div>
+            <table width="100%" border="1" class="table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>S.N</th>
+                        <th>
+                            Name
+                        </th>
+                        @foreach (var item in Model.SubjectList)
+                        {
+                            <th>
+                                @item.SubjectName
+                            </th>
+                        }
+                        <th>
+                            Total
+                        </th>
+                        <th>
+                            Average
+                        </th>
+                        <th>
+                            Percentage
+                        </th>
+                        <th>
+                            Grade
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.StudentList)
+                    {
+
+                        decimal? sum = 0;
+                        decimal? total = 0;
+                        int countSubject = 0;
+                        decimal? avg = 0;
+                        decimal? fullMarks = 0;
+                        percent = 0;
+                        <tr>
+                            <td>
+                                <input type="hidden" class="form-control" value="@item.Id" name="StudentId" />
+                                @SN
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                            @foreach (var _item in Model.SubjectList)
+                            {
+                                sum = 0;
+                                countSubject++;
+
+                                @foreach (var _detail in Model.DetailList)
+                                {
+                                    fullMarks = _detail.FullMarks.ToDecimal();
+                                    var marks = Model.ManageMarksList.Where(x => x.Id == _detail.ManageMarksId && x.SubjectId == _item.Id).FirstOrDefault();
+                                    if (marks != null)
+                                    {
+                                        if (_item.Id == marks.SubjectId && _detail.StudentId == item.Id)
+                                        {
+                                            sum += _detail.ObtainedMarks.ToDecimal();
+                                        }
+                                        classId = marks.ClassSetupId;
+                                        sectionId = marks.SectionSetupId;
+                                        termId = marks.TermId;
+                                        sessionId = marks.SessionSetupId;
+                                    }
+                                }
+                                if (sum > 0)
+                                {
+                                    total += sum;
+                                    <td>
+                                        <input type="hidden" class="form-control" value="@classId" name="ClassId" />
+                                        <input type="hidden" class="form-control" value="@sectionId" name="SectionSetupId" />
+                                        <input type="hidden" class="form-control" value="@termId" name="TermId" />
+                                        <input type="hidden" class="form-control" value="@sessionId" name="SessionSetupId" />
+                                        <label>@sum</label>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                    </td>
+                                }
+
+                            }
+                            <td>
+                                @total
+                            </td>
+                            <td>
+                                @{
+                                    avg = total / countSubject;
+                                }
+                                <label>@avg</label>
+                            </td>
+                            <td>
+                                @{
+                                    percent = (total / (fullMarks * countSubject)) * 100;
+                                }
+                                <label>@percent</label>
+                            </td>
+                            <td>
+                                @if (percent > 90 && percent < 100)
+                                {
+                                    totalGrade = "A+";
+                                    <label>A+</label>
+                                }
+                                else if (percent > 80 && percent <= 90)
+                                {
+                                    totalGrade = "A";
+                                    <label>A</label>
+                                }
+                                else if (percent > 70 && percent <= 80)
+                                {
+                                    totalGrade = "B+";
+                                    <label>B+</label>
+                                }
+                                else if (percent > 60 && percent <= 70)
+                                {
+                                    totalGrade = "B";
+                                    <label>B</label>
+                                }
+                                else if (percent > 50 && percent <= 60)
+                                {
+                                    totalGrade = "C+";
+                                    <label>C+</label>
+                                }
+                                else if (percent > 40 && percent <= 50)
+                                {
+                                    totalGrade = "C";
+                                    <label>C</label>
+                                }
+                                else if (percent > 20 && percent <= 40)
+                                {
+                                    totalGrade = "D";
+                                    <label>D</label>
+                                }
+                                else if (percent > 1 && percent <= 20)
+                                {
+                                    totalGrade = "E";
+                                    <label>E</label>
+                                }
+                                else
+                                {
+                                    totalGrade = "N";
+                                    <label>N</label>
+                                }
+                            </td>
+                        </tr>
+                        SN++;
+                    }
+                </tbody>
+            </table>
+            <hr />
+            <h4>Performance</h4>
+            <hr />
+            <div class="row">
+                <div class="col-lg-12" style=" margin-left: -15px;">
+                    <div class="col-lg-3">
+                        <label for="Year">Division</label><br />
+                        <input type="text" asp-for="Division" class="form-control" id="Division" autocomplete="off" placeholder="Division" required />
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="Year">Total Grade</label><br />
+                        <input type="text" asp-for="TotalGrade" class="form-control" id="TotalGrade" value="@totalGrade" autocomplete="off" placeholder="TotalGrade" required />
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="Year">Position</label><br />
+                        <input type="text" asp-for="Position" class="form-control" id="Position" autocomplete="off" placeholder="Position" required />
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="Year">Percentage</label><br />
+                        <input type="text" asp-for="Percentage" class="form-control" id="Percentage" autocomplete="off" placeholder="Percentage" required />
+                    </div>
+
+                </div>
+            </div>
+            <hr />
+            <h4></h4>
+            <hr />
+            <div class="row">
+                <div class="col-lg-4" style=" margin-left: -15px;">
+                    <table class="table-bordered table-striped" width="100%" border="1">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center">Personality Traits</th>
+                                <th style="text-align:center">A</th>
+                                <th style="text-align:center">B</th>
+                                <th style="text-align:center">C</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align:center">Discipline</td>
+                                <td style="text-align:center">
+                                    <input class="form-check-input" type="radio" name="Discipline" id="Discipline" asp-for="Discipline" value="A" checked>
+                                </td>
+                                <td style="text-align:center">
+                                    <input class="form-check-input" type="radio" name="Discipline" id="Discipline" asp-for="Discipline" value="B">
+                                </td>
+                                <td style="text-align:center">
+                                    <input class="form-check-input" type="radio" name="Discipline" id="Discipline" asp-for="Discipline" value="C">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12" style=" margin-left: -15px;">
+                    <div class="col-lg-12" style="text-align:right">
+                        <button type="submit" style="margin-top: 28px;" class="btn  btn-success" id="btnSubmit"><i class="feather mr-2 icon-check-square"></i>Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@section Scripts
+    {
+    <script type="text/javascript">
+        $(function() {
+            //var grade = "@totalGrade";
+            //$("#TotalGrade").val(grade);
+
+            var percentage = "@percent";
+            $("#Percentage").val(percentage);
+            if (percentage > 60 && percentage <= 100) {
+                $("#Division").val("First Division");
+            }
+            else if (percentage > 40 && percentage <= 60) {
+                $("#Division").val("Second Division");
+            }
+            else if (percentage > 0 && percentage <= 40) {
+                $("#Division").val("Third Division");
+            }
+            else {
+                $("#Division").val("0");
+            }
+        });
+
+
+    </script>
+}

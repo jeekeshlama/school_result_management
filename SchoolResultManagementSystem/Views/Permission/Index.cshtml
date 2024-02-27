@@ -1,0 +1,125 @@
+﻿@model FiboUser.Src.ViewModel.PermissionViewModel
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Permission</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Permission</a></li>
+                <li class="breadcrumb-item active">Index </li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="card" style="margin-left:90px; width:1060px; margin-top:20px;">
+    <form asp-controller="permission" method="post" asp-action="Update" class="d-inline">
+        <div id="viewAll" class="card-body table-responsive">
+            <input asp-for="@Model.RoleId" type="hidden" />
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Menu
+                        </th>
+                        <th>
+                            Sub-Menu
+                        </th>
+                        <th>
+                         <input type="checkbox" id="checkedAll" style="height:20px;width:20px" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.RoleClaims.Count(); i++)
+                    {
+                        string[] permissionArr = Model.RoleClaims[i].Value.Split('.');
+        <tr>
+            <td>
+                <input asp-for="@Model.RoleClaims[i].Type" type="hidden" />
+                @Model.RoleClaims[i].Type
+            </td>
+            <td>
+                @permissionArr[1]
+            </td>
+            <td>
+                <input asp-for="@Model.RoleClaims[i].Value" type="hidden" />
+                @permissionArr[2]
+            </td>
+            <td>
+                <div class="form-check m-1">
+                    <input type="checkbox" asp-for="@Model.RoleClaims[i].Selected" class="form-check-input" style="height:20px;width:20px" />
+                </div>
+            </td>
+        </tr>}
+                </tbody>
+            </table>
+
+        </div>
+        <div class="card-footer" style="text-align:right">
+            <button type="submit" id="save" class="btn btn-success">
+                <i class="ti-check-box"></i>
+                Save
+            </button>
+        </div>
+    </form>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#checkedAll").change(function () {
+                if (this.checked) {
+                    $('input:checkbox').each(function () {
+                        this.checked = true;
+                    });
+                } else {
+                    $('input:checkbox').each(function () {
+                        this.checked = false;
+                    });
+                }
+            });
+
+            $('input:checkbox').click(function () {
+                if ($(this).is(":checked")) {
+                    var isAllChecked = 0;
+
+                    $('input:checkbox').each(function () {
+                        if (!this.checked)
+                            isAllChecked = 1;
+                    });
+
+                    if (isAllChecked == 1) {
+                        $("#checkedAll").prop("checked", true);
+                    }
+                }
+                else {
+                    $("#checkedAll").prop("checked", false);
+                }
+            });
+        });
+    </script>
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+@if (ViewBag.Messege != null)
+{
+<script type="text/javascript">
+        $(function () {
+            "use strict";
+
+            $.toast({
+                heading: 'Success'
+                , text: '@ViewBag.Messege'
+                , position: 'bottom-left'
+                , loaderBg: '#ff6849'
+                , icon: 'success'
+                , hideAfter: 4500
+                , stack: 6
+            })
+        })
+</script>
+}

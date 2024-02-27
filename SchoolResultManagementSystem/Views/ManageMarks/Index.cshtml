@@ -1,0 +1,168 @@
+﻿@model FiboSchool.Src.ViewModel.ManageMarksViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Index";
+    int SN = 1;
+}
+@inject FiboSchool.InfraStructure.Repository.ISessionSetupRepository _sessionRepo;
+@inject FiboSchool.InfraStructure.Repository.IClassSetupRepository _classRepo;
+@inject FiboSchool.InfraStructure.Repository.ISubjectRepository _subjectRepo;
+@inject FiboSchool.InfraStructure.Repository.ISectionSetupRepository _sectionRepo;
+@inject FiboSchool.InfraStructure.Repository.ITermRepository _termRepo;
+
+
+<div class="row">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-left:90px; width:1100px;">
+     <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="breadcome-list">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="breadcome-heading">
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <ul class="breadcome-menu">
+                                        <li>
+                                            <a href="#">Home</a> <span class="bread-slash">/</span>
+                                        </li>
+                                        <li>
+                                            <span class="bread-blod">ManageMarks </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    <div class="sparkline13-list">
+        <div class="sparkline13-hd">
+            <div class="main-sparkline13-hd">
+                <h1>Marks <span class="table-project-n"></span> List</h1>
+            </div>
+        </div>
+        <div class="sparkline13-graph">
+            <div class="datatable-dashv1-list custom-datatable-overright">
+                <div id="toolbar">
+                    <select class="form-control dt-tb">
+                        <option value="">Export Basic</option>
+                        <option value="all">Export All</option>
+                        <option value="selected">Export Selected</option>
+                    </select>
+                </div>
+
+                <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" @*data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"*@
+                       data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
+                    <thead>
+                        <tr>
+                            <th>S.N</th>
+                            <th>
+                                Session
+                            </th>
+                            <th>
+                                Term
+                            </th>
+                            <th>
+                                Class
+                            </th>
+                            <th>
+                                Section
+                            </th>
+                            <th>
+                                Subject
+                            </th>
+
+                            <th style="text-align:center;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ManageMarksList)
+                        {
+                            var session = await _sessionRepo.GetByIdAsync((long)item.SessionSetupId);
+                            var _class = await _classRepo.GetByIdAsync((long)item.ClassSetupId);
+                            var subject = await _subjectRepo.GetByIdAsync((long)item.SubjectId);
+                            var _section = await _sectionRepo.GetByIdAsync((long)item.SectionSetupId);
+                            var term = await _termRepo.GetByIdAsync((long)item.TermId);
+                            <tr>
+                                <td>@SN</td>
+                                <td>
+                                    @session.Session
+                                </td>
+                                <td>
+                                    @term.Name
+                                </td>
+                                <td>
+                                    @_class.Name
+                                </td>
+                                <td>
+                                    @_section.Name
+                                </td>
+                                <td>
+                                    @subject.SubjectName
+                                </td>
+                                <td style="text-align:center;">
+                                                                                        <a type="button"   asp-action="Update" asp-controller="ManageMarks" asp-route-id="@item.Id" class="pd-setting-ed btn"><i class="fa fa-pencil-square-o" data-toggle="tooltip" title="Edit" aria-hidden="true"></i></a>
+
+                                    <a type="button" asp-action="ViewMarks" asp-controller="ManageMarks" asp-route-id="@item.Id" class="pd-setting-ed btn"><i class="fa fa-eye" data-toggle="tooltip" title="View" aria-hidden="true"></i></a>
+                                </td>
+                            </tr>
+                            SN++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+    'use strict';
+    $(window).on('load', function () {
+        function notify(message,type) {
+            $.growl({
+                message: message
+            }, {
+                type: type,
+                allow_dismiss: false,
+                label: 'Cancel',
+                className: 'btn-xs btn-inverse',
+                placement: {from: 'top', align: 'right'},
+                delay: 2500,
+                animate: { enter: 'animated rotateIn', exit: 'animated rotateIn'},
+                offset: {x: 30,y: 30}
+            });
+        };
+        notify('@ViewBag.Message','success');
+    });
+    </script>
+}
+
+ 
+
+@if (ViewBag.Messege != null)
+{
+    <script type="text/javascript">
+    'use strict';
+    $(window).on('load', function () {
+        function notify(messege,type) {
+            $.growl({
+                message: messege
+            }, {
+                type: type,
+                allow_dismiss: false,
+                label: 'Cancel',
+                className: 'btn-xs btn-inverse',
+                placement: {from: 'top', align: 'right'},
+                delay: 2500,
+                animate: { enter: 'animated rotateIn', exit: 'animated rotateIn'},
+                offset: {x: 30,y: 30}
+            });
+        };
+        notify('@ViewBag.Messege','danger');
+    });
+    </script>
+}
+

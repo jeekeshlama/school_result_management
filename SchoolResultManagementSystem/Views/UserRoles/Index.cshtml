@@ -1,0 +1,61 @@
+﻿@model FiboUser.Src.ViewModel.ManageUserRolesViewModel
+@inject Microsoft.AspNetCore.Identity.UserManager<FiboInfraStructure.Data.ApplicationUser> _userManager;
+
+
+@{ var thisUser = _userManager.Users.Where(x => x.Id == Model.UserId).FirstOrDefault(); }
+
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">@thisUser.UserName</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Role</a></li>
+                <li class="breadcrumb-item active">Index </li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="card" style="margin-left:90px; width:1060px; margin-top:20px;">
+    <form asp-controller="UserRoles" method="post" asp-action="update" asp-route-id="@Model.UserId" class="d-inline">
+        <div id="viewAll" class="card-body table-responsive">
+
+            <input asp-for="@Model.UserId" type="hidden" />
+            <table class="table table-striped" id="userRolesTable">
+                <thead>
+                    <tr>
+                        <th>
+                            Role
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.UserRoles.Count(); i++)
+                    {
+                     <tr>
+                        <td>
+                            <input asp-for="@Model.UserRoles[i].RoleName" type="hidden" />
+                            @Model.UserRoles[i].RoleName
+                        </td>
+                        <td>
+                            <div class="form-check m-1">
+                                <input asp-for="@Model.UserRoles[i].Selected" class="form-check-input" />
+                            </div>
+                        </td>
+                     </tr>
+                     }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer" style="text-align:right">
+            <button type="submit" id="save" class="btn btn-success">
+                <i class="ti-check-box"></i>
+                Save
+            </button>
+        </div>
+    </form>
+</div>

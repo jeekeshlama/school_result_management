@@ -1,0 +1,41 @@
+﻿@{ Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Index";
+    int SN = 1; }
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="tableFixHead">
+                    <table class="table table-bordered">
+                        <thead style="background-color: #20c997;">
+                            <tr>
+                                <th>SN</th>
+                                <th>
+                                    Name
+                                </th>
+                                <th style="text-align:center">
+                                    Action Name
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@SN</td>
+                                <td>
+                            @*<tr><a href="@Url.Action("SalesReport","SalesReport",new { @branchId=item.Id})" target="_parent">@item.Name</a></tr>
+                            <tr><a href="@Url.Action("InventoryReport","InventoryReport",new { @branchId=item.Id})" target="_parent">@item.Name</a></tr>
+                            <tr><a href="@Url.Action("BillingReport","BillingReport",new { @branchId=item.Id})" target="_parent">@item.Name</a></tr>
+                            <tr><a href="@Url.Action("Ing","Branch",new { @branchId=item.Id})" target="_parent">@item.Name</a></tr>
+                            </td>*@
+                        <td>
+
+                        </td>
+                        </tr>
+                        @SN++;
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

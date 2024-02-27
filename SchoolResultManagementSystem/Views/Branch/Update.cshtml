@@ -1,0 +1,151 @@
+﻿@model FiboOffice.Src.Dto.BranchDto
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Update";
+}
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Branch</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Branch</a></li>
+                <li class="breadcrumb-item active">Update </li>
+            </ol>
+        </div>
+    </div>
+</div>
+<form asp-action="Update" asp-controller="Branch" method="post" id="main"  class="needs-validation" novalidate>
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Update Branch</h4>
+                    <hr />
+                </div>
+                <div class="card-body">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="Name">Name<span style="color:red">*</span></label><br />
+                                <input type="text" asp-for="Name" class="form-control" id="Name" required autocomplete="off" />
+                                <div class="invalid-feedback">
+                                    Please Enter A Name.
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="PhoneNo">Phone Number<span style="color:red">*</span></label><br />
+                                <input type="text" asp-for="PhoneNo" class="form-control" id="PhoneNo" required autocomplete="off" />
+                                <div class="invalid-feedback">
+                                    Please Enter A Phone/Mobile Number.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="Email">Email Address<span style="color:red">*</span></label><br />
+                                <input type="text" asp-for="Email" class="form-control" id="Email" required autocomplete="off" />
+                                <div class="invalid-feedback">
+                                    Please Enter A Email Address.
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="Name">Office<span style="color:red">*</span></label><br />
+                                <select asp-for="OfficeId" asp-items="Model.OfficeList" class="select2 custom-select form-control" id="OfficeId"autocomplete="off" required></select>
+                                <div class="invalid-feedback">
+                                    Please Enter A Office.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="Name">Provience<span style="color:red">*</span></label><br />
+                                <select asp-for="ProvienceId" asp-items="Model.ProvienceList" class="select2 custom-select form-control" id="ProvienceId"autocomplete="off" required></select>
+                                <div class="invalid-feedback">
+                                    Please Enter A Provience.
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="Name">District<span style="color:red">*</span></label><br />
+                                <select asp-for="DistrictId" asp-items="Model.DistrictList" class="select2 custom-select form-control" id="DistrictId" autocomplete="off"required></select>
+                                <div class="invalid-feedback">
+                                    Please Enter A District.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="Name">Local Level<span style="color:red">*</span></label><br />
+                                <select asp-for="LocalLevelId" asp-items="Model.LocalLevelList" class="select2 custom-select form-control" id="LocalLevelId"autocomplete="off" required></select>
+                                <div class="invalid-feedback">
+                                    Please Enter A Local Level.
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="WardNo">Ward Number<span style="color:red">*</span></label><br />
+                                <input type="text" asp-for="WardNo" class="form-control" id="WardNo" required autocomplete="off" />
+                                <div class="invalid-feedback">
+                                    Please Enter A Ward Number.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group-sm">
+                    <div class="card-footer" style="text-align:right">
+                        <button type="submit" class="btn  btn-success" id="btnSubmit"><i class="fa fa-check edu-checked-pro">Submit</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+    'use strict';
+    $(window).on('load', function () {
+        function notify(message) {
+            $.notify({
+                message: message,
+                type: 'inverse',
+                allow_dismiss: false,
+                label: 'Cancel',
+                className: 'btn-xs btn-inverse',
+                placement: { from: 'bottom', align: 'right' },
+                delay: 2500,
+                animate: { enter: 'animated fadeInRight', exit: 'animated fadeOutRight' },
+                offset: { x: 30, y: 30 }
+            });
+        };
+        /**/
+        notify('@ViewBag.Message', 'success');
+    /**/
+    });
+    </script>
+}
+
+<script type="text/javascript">
+    $(document).on('invalid-form.validate', 'form', function () {
+        var button = $(this).find(':submit');
+        setTimeout(function () {
+            button.removeAttr('disabled');
+        }, 1);
+    });
+    $(document).on('submit', 'form', function () {
+        var button = $(this).find(':submit');
+        setTimeout(function () {
+            button.attr('disabled', 'disabled');
+        }, 0);
+    });
+</script>

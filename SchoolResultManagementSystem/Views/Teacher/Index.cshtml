@@ -1,0 +1,194 @@
+﻿@model FiboSchool.Src.ViewModel.TeacherViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Index";
+    int Sn = 1;
+}
+
+@inject FiboSchool.InfraStructure.Repository.ISubjectRepository _subjectRepo;
+
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="breadcome-list">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="breadcome-heading">
+                                <form role="search" class="sr-input-func">
+                                    @*                                               // <input type="text" placeholder="Search..." class="search-int form-control">
+                                        <a href="#"><i class="fa fa-search"></i></a>*@
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <ul class="breadcome-menu">
+                                <li>
+                                    <a href="#">Home</a> <span class="bread-slash"><i class="fas fa-arrow-left"></i></span>
+                                </li>
+                                <li>
+                                    <span class="bread-blod">Teacher </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sparkline13-list" style="margin-left:90px;">
+            <div class="sparkline13-hd">
+                <div class="main-sparkline13-hd">
+                    <h1>Teacher <span class="table-project-n"></span> List</h1>
+                    <a type="button" class="btn btn-warning" asp-action="subjectinfo" asp-controller="Teacher" data-loading-text="Loading...">
+                        <i class="fa fa-eye" data-toggle="tooltip" title="View">All Teachers</i>
+                    </a>
+                </div>
+            </div>
+            <div class="sparkline13-graph">
+                <div class="datatable-dashv1-list custom-datatable-overright">
+                    <div id="toolbar">
+                        <select class="form-control dt-tb">
+                            <option value="">Export Basic</option>
+                            <option value="all">Export All</option>
+                            <option value="selected">Export Selected</option>
+                        </select>
+                    </div>
+                    <div class="add-product">
+
+                        <button data-toggle="modal" TeacherId="0" data-target="#myModal" class="pd-setting-ed" style="float:right;margin-top:-30px;"><i class="fa fa-plus" data-toggle="tooltip" title="Add" aria-hidden="true">Add Teacher</i></button>
+                    </div>
+                    <div class="tableFixHead">
+                        <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" @*data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"*@
+                               data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
+                            <thead>
+                                <tr>
+                                    <th>S.N</th>
+                                    <th>Teacher Name</th>
+                                    <th>PhoneNumber</th>
+                                    <th>Subject</th>
+                                    <th>Setting</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Teachers)
+                                {
+                                    var subject = await _subjectRepo.GetByIdAsync((long)item.SubjectId);
+
+                                <tr>
+                                    <td>@Sn</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.MobileNumber</td>
+                                    <td>
+                                        @if (subject != null)
+                                        {
+                                            @subject.SubjectName
+                                        }
+                                    </td>
+                                    <td>
+                                        <button ReferenceType="Crud" data-toggle="modal" TeacherId="@item.Id" data-target="#myModal" class="pd-setting-ed"><i class="fa fa-pencil-square-o" data-toggle="tooltip" title="Edit" aria-hidden="true"></i></button>
+                                        <button data-toggle="modal" TeacherId="@item.Id" data-target="#myModal" class="pd-setting-ed"><i class="fa fa-trash" data-toggle="tooltip" title="Trash" aria-hidden="true"></i></button>
+                                    </td>
+                                </tr>
+                                    Sn++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" id="DeleteBody">
+
+        <!-- /.modal-content -->
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@section Scripts
+{
+    <script type="text/javascript">
+    $("#myModal").on('show.bs.modal', function (e) {
+        const TeacherId = $(e.relatedTarget).attr('TeacherId');
+            const type = $(e.relatedTarget).attr('ReferenceType');
+        if (TeacherId > 0) {
+                if (type == null) {
+                    var url = '@Url.Action("Delete", "Teacher")' + "?id=" + TeacherId;
+                    $("#DeleteBody").load(url, function () {
+                        $("#myModal").modal('show');
+                    });
+                }
+                else {
+                    var url = '@Url.Action("Update", "Teacher")' + "?id=" + TeacherId;
+                    $("#DeleteBody").load(url, function () {
+                        $("#myModal").modal('show');
+                    });
+            };
+        }
+            else {
+                var url = '@Url.Action("Create", "Teacher")';
+                $("#DeleteBody").load(url, function () {
+                    $("#myModal").modal('show');
+                });
+            }
+        })
+
+    </script>
+
+}
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+    'use strict';
+    $(window).on('load', function () {
+        function notify(message,type) {
+            $.growl({
+                message: message
+            }, {
+                type: type,
+                allow_dismiss: false,
+                label: 'Cancel',
+                className: 'btn-xs btn-inverse',
+                placement: {from: 'top', align: 'right'},
+                delay: 2500,
+                animate: { enter: 'animated rotateIn', exit: 'animated rotateIn'},
+                offset: {x: 30,y: 30}
+            });
+        };
+        notify('@ViewBag.Message','success');
+    });
+    </script>
+}
+
+
+
+@if (ViewBag.Messege != null)
+{
+    <script type="text/javascript">
+    'use strict';
+    $(window).on('load', function () {
+        function notify(messege,type) {
+            $.growl({
+                message: messege
+            }, {
+                type: type,
+                allow_dismiss: false,
+                label: 'Cancel',
+                className: 'btn-xs btn-inverse',
+                placement: {from: 'top', align: 'right'},
+                delay: 2500,
+                animate: { enter: 'animated rotateIn', exit: 'animated rotateIn'},
+                offset: {x: 30,y: 30}
+            });
+        };
+        notify('@ViewBag.Messege','danger');
+    });
+    </script>
+}

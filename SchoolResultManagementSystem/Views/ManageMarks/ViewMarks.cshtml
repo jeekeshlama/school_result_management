@@ -1,0 +1,123 @@
+﻿@model FiboSchool.Src.ViewModel.ManageMarksViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Index";
+    int SN = 1;
+    var session = await _sessionRepo.GetByIdAsync((long)Model.ManageMarks.SessionSetupId);
+    var _class = await _classRepo.GetByIdAsync((long)Model.ManageMarks.ClassSetupId);
+    var subject = await _subjectRepo.GetByIdAsync((long)Model.ManageMarks.SubjectId);
+    var _section = await _sectionRepo.GetByIdAsync((long)Model.ManageMarks.SectionSetupId);
+    var term = await _termRepo.GetByIdAsync((long)Model.ManageMarks.TermId);
+}
+@inject FiboSchool.InfraStructure.Repository.ISessionSetupRepository _sessionRepo;
+@inject FiboSchool.InfraStructure.Repository.IClassSetupRepository _classRepo;
+@inject FiboSchool.InfraStructure.Repository.ISubjectRepository _subjectRepo;
+@inject FiboSchool.InfraStructure.Repository.IStudentRepository _studentRepo;
+@inject FiboSchool.InfraStructure.Repository.ISectionSetupRepository _sectionRepo;
+@inject FiboSchool.InfraStructure.Repository.ITermRepository _termRepo;
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-left:90px; margin-top:80px; width:1100px;">
+    <div class="sparkline13-list">
+        <div class="sparkline13-hd">
+            <div class="main-sparkline13-hd">
+
+            </div>
+        </div>
+        <div class="sparkline13-graph">
+            <div>
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                Session
+                            </th>
+                            <th>
+                                Term
+                            </th>
+                            <th>
+                                Class
+                            </th>
+                            <th>
+                                Section
+                            </th>
+                            <th>
+                                Subject
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @session.Session
+                            </td>
+                            <td>
+                                @term.Name
+                            </td>
+                            <td>
+                                @_class.Name
+                            </td>
+                            <th>
+                                @_section.Name
+                            </th>
+                            <td>
+                                @subject.SubjectName
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-left:90px; width:1100px;">
+    <div class="sparkline13-list">
+        <div class="sparkline13-hd">
+            <div class="main-sparkline13-hd">
+
+            </div>
+        </div>
+        <div class="sparkline13-graph">
+            <div>
+                <table width="100%" class="table table-bordered table-striped" border="1">
+                    <thead>
+                        <tr>
+                            <th>S.N</th>
+                            <th>
+                                Student Name
+                            </th>
+                            <th>
+                                Full Marks
+                            </th>
+                            <th>
+                                Pass Marks
+                            </th>
+                            <th>
+                                Obtained Marks
+                            </th>
+                            <th>
+                                Highest Marks
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.DetailList)
+                        {
+                            var student = await _studentRepo.GetByIdAsync((long)item.StudentId);
+                            <tr>
+                                <td>@SN</td>
+                                <td>@student.Name</td>
+                                <td>@item.FullMarks</td>
+                                <td>@item.PassMarks</td>
+                                <td>@item.ObtainedMarks</td>
+                                <td>@item.HighestMarks</td>
+                            </tr>
+                            SN++;
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

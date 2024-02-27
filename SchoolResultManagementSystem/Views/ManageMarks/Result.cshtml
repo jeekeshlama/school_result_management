@@ -1,0 +1,478 @@
+﻿@model FiboSchool.Src.ViewModel.ResultViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Result";
+    int SN = 1;
+    string totalGrade="";
+    decimal? percent=0;
+    decimal? sum=0;
+    decimal? total=0;
+    decimal? fullMarks=0;
+    decimal? passMarks=0;
+    decimal? highMarks=0;
+    decimal? tmpTotal=0;
+    var studentList = await _studentRepo.GetAllStudentAsync();
+
+
+    var classList = await _classRepo.GetAllClassSetupAsync();
+
+
+    var sessionList = await _sessionRepo.GetAllSessionSetupAsync();
+
+
+    var sectionList = await _sectionRepo.GetAllSectionSetupAsync();
+
+    var termList = await _termRepo.GetAllTermAsync();
+    
+}
+
+@using FiboInfraStructure;
+@inject FiboSchool.InfraStructure.Repository.IStudentRepository _studentRepo;
+@inject FiboSchool.InfraStructure.Repository.IClassSetupRepository _classRepo;
+@inject FiboSchool.InfraStructure.Repository.ISessionSetupRepository _sessionRepo;
+@inject FiboSchool.InfraStructure.Repository.ISectionSetupRepository _sectionRepo;
+@inject FiboSchool.InfraStructure.Repository.ITermRepository _termRepo;
+<style>
+    .col-lg-12 {
+        width: 99% !important;
+    }
+</style>
+
+<div class="col-lg-12" style=" min-width: 90%">
+    <div id="profile" class="sparkline13-list" style="border:groove; margin-left:100px; margin-top:90px;">
+        <table width="100%">
+            <tr>
+                <td style="font-size:28px; text-align:center"><b>Ocience Boarding School</b></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Mechinagar-02, Bahudamode, Jhapa, Nepal</td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Email:info@ocience.com</td>
+            </tr>
+        </table>
+        <table width="100%">
+            <tr>
+                <td style="float:left" width="50%">
+                    Name:&nbsp;
+                    @{
+                        if (Model.Performance != null)
+                        {
+                            var student = studentList.Where(x => x.Id == Model.Performance.StudentId).FirstOrDefault();
+                            @student.Name
+                        }
+                    }
+
+                </td>
+                <td width="45%"></td>
+                <td width="25%">
+                    Session:&nbsp;
+                    @{
+                        if (Model.Performance != null)
+                        {
+                            var session = sessionList.Where(x => x.Id == Model.Performance.SessionSetupId).FirstOrDefault();
+                            @session.Session
+                        }
+                    }
+
+                </td>
+            </tr>
+            <tr>
+                <td style="float:left" width="50%">
+                    Class:&nbsp;
+                    @{
+                        if (Model.Performance != null)
+                        {
+                            var _class = classList.Where(x => x.Id == Model.Performance.ClassId).FirstOrDefault();
+                            @_class.Name
+                        }
+                    }
+
+                </td>
+                <td width="45%"></td>
+                <td width="25%">
+                    Term:&nbsp;
+                    @{
+                        if (Model.Performance != null)
+                        {
+                            var term = termList.Where(x => x.Id == Model.Performance.TermId).FirstOrDefault();
+                            @term.Name
+                        }
+                    }
+
+                </td>
+            </tr>
+            <tr>
+                <td style="float:left" width="50%">
+                    Section:&nbsp;
+                    @{
+                        if (Model.Performance != null)
+                        {
+                            var _section = sectionList.Where(x => x.Id == Model.Performance.SectionSetupId).FirstOrDefault();
+                            @_section.Name
+                        }
+                    }
+
+                </td>
+                <td width="45%"></td>
+                <td width="25%">
+                    Position:&nbsp;
+                    @if (Model.Performance != null)
+                    {
+                        @Model.Performance.Position
+                    }
+
+                </td>
+            </tr>
+        </table>
+        <table width="100%" border="1" class="table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th style="text-align:center">
+                        Subject
+                    </th>
+                    <th style="text-align:center; min-width:20px;">
+                        Full Marks
+                    </th>
+                    <th style="text-align: center; min-width: 20px;">
+                        Pass Marks
+                    </th>
+                    <th style="text-align:center">
+                        Marks
+                    </th>
+                    <th style="text-align:center">
+                        Grade
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @{
+                            if (Model.SubjectList != null)
+                            {
+                                @foreach (var _item in Model.SubjectList)
+                                {
+                                    <label style="font-weight: 400; padding-left: 10px; ">@_item.SubjectName</label><br />
+                                }
+                            }
+                        }
+                    </td>
+                    <td style="text-align: right;padding-right: 10px;">
+                        @{
+                            if (Model.SubjectList != null)
+                            {
+                                @foreach (var _item in Model.SubjectList)
+                                {
+                                    fullMarks = 0;
+                                    @foreach (var _detail in Model.DetailList)
+                                    {
+                                        var marks = Model.ManageMarksList.Where(x => x.Id == _detail.ManageMarksId && x.SubjectId == _item.Id).FirstOrDefault();
+                                        if (marks != null)
+                                        {
+                                            if (Model.Performance != null)
+                                            {
+                                                if (_item.Id == marks.SubjectId && _detail.StudentId == Model.Performance.StudentId)
+                                                {
+                                                    fullMarks += _detail.FullMarks.ToDecimal();
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (fullMarks > 0)
+                                    {
+                                        <label>@fullMarks</label><br />
+                                    }
+                                    else
+                                    {
+
+                                    }
+
+                                }}}
+                    </td>
+                    <td style="text-align: right;padding-right: 10px;">
+                        @{
+                            if (Model.SubjectList != null)
+                            {
+                                @foreach (var _item in Model.SubjectList)
+                                {
+                                    passMarks = 0;
+                                    @foreach (var _detail in Model.DetailList)
+                                    {
+                                        var marks = Model.ManageMarksList.Where(x => x.Id == _detail.ManageMarksId && x.SubjectId == _item.Id).FirstOrDefault();
+                                        if (marks != null)
+                                        {
+                                            if (Model.Performance != null)
+                                            {
+                                                if (_item.Id == marks.SubjectId && _detail.StudentId == Model.Performance.StudentId)
+                                                {
+                                                    passMarks += _detail.PassMarks.ToDecimal();
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (passMarks > 0)
+                                    {
+                                        <label>@passMarks</label><br />
+                                    }
+                                    else
+                                    {
+
+                                    }
+
+                                }}}
+                    </td>
+                    <td style="text-align: right;padding-right: 10px;">
+                        @{
+                            if (Model.SubjectList != null)
+                            {
+                                @foreach (var _item in Model.SubjectList)
+                                {
+                                    sum = 0;
+                                    @foreach (var _detail in Model.DetailList)
+                                    {
+                                        var marks = Model.ManageMarksList.Where(x => x.Id == _detail.ManageMarksId && x.SubjectId == _item.Id).FirstOrDefault();
+                                        if (marks != null)
+                                        {
+                                            if (Model.Performance != null)
+                                            {
+                                                if (_item.Id == marks.SubjectId && _detail.StudentId == Model.Performance.StudentId)
+                                                {
+                                                    sum += _detail.ObtainedMarks.ToDecimal();
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (sum > 0)
+                                    {
+                                        total += sum;
+                                        <label>@sum</label><br />
+                                    }
+                                    else
+                                    {
+
+                                    }
+
+                                }}}
+                    </td>
+                    <td style="text-align: right;padding-right: 10px;">
+                        @{
+                            if (Model.SubjectList != null)
+                            {
+                                @foreach (var _item in Model.SubjectList)
+                                {
+                                    tmpTotal = 0;
+                                    @foreach (var _detail in Model.DetailList)
+                                    {
+                                        var marks = Model.ManageMarksList.Where(x => x.Id == _detail.ManageMarksId && x.SubjectId == _item.Id).FirstOrDefault();
+                                        if (marks != null)
+                                        {
+                                            if (Model.Performance != null)
+                                            {
+                                                if (_item.Id == marks.SubjectId && _detail.StudentId == Model.Performance.StudentId)
+                                                {
+                                                    tmpTotal += _detail.ObtainedMarks.ToDecimal();
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (tmpTotal > 0)
+                                    {
+                                        @if (tmpTotal > 90 && tmpTotal < 100)
+                                        {
+                                            totalGrade = "A+";
+                                            <label>A+</label><br />
+                                        }
+                                        else if (tmpTotal > 80 && tmpTotal <= 90)
+                                        {
+                                            totalGrade = "A";
+                                            <label>A</label><br />
+                                        }
+                                        else if (tmpTotal > 70 && tmpTotal <= 80)
+                                        {
+                                            totalGrade = "B+";
+                                            <label>B+</label><br />
+                                        }
+                                        else if (tmpTotal > 60 && tmpTotal <= 70)
+                                        {
+                                            totalGrade = "B";
+                                            <label>B</label><br />
+                                        }
+                                        else if (tmpTotal > 50 && tmpTotal <= 60)
+                                        {
+                                            totalGrade = "C+";
+                                            <label>C+</label><br />
+                                        }
+                                        else if (tmpTotal > 40 && tmpTotal <= 50)
+                                        {
+                                            totalGrade = "C";
+                                            <label>C</label><br />
+                                        }
+                                        else if (tmpTotal > 20 && tmpTotal <= 40)
+                                        {
+                                            totalGrade = "D";
+                                            <label>D</label><br />
+                                        }
+                                        else if (tmpTotal > 1 && tmpTotal <= 20)
+                                        {
+                                            totalGrade = "E";
+                                            <label>E</label><br />
+                                        }
+                                        else
+                                        {
+                                            totalGrade = "N";
+                                            <label>N</label><br />
+                                        }
+                                    }
+                                    else
+                                    {
+
+                                    }
+
+                                }}}
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td style="padding-right: 5px; float: right"><b>Total</b></td>
+                    <td>@total</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
+        <div class="row">
+            <div class="col-lg-4">
+                <table class="table-bordered table-striped" width="100%" border="1">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center">Personality Traits</th>
+                            <th style="text-align:center">A</th>
+                            <th style="text-align:center">B</th>
+                            <th style="text-align:center">C</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:center">Discipline</td>
+                            <td style="text-align:center">
+                                @if (Model.Performance != null)
+                                {
+                                    if (Model.Performance.Discipline == "A")
+                                    {
+                                        <input type="radio" name="Discipline" id="Discipline" value="A" checked>
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" name="Discipline" id="Discipline">
+                                    }
+                                }
+                            </td>
+                            <td style="text-align:center">
+                                @if (Model.Performance != null)
+                                {
+                                    if (Model.Performance.Discipline == "B")
+                                    {
+                                        <input type="radio" name="Discipline" id="Discipline" value="B" checked>
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" name="Discipline" id="Discipline">
+                                    }
+                                }
+                            </td>
+                            <td style="text-align:center">
+                                @if (Model.Performance != null)
+                                {
+                                    if (Model.Performance.Discipline == "C")
+                                    {
+                                        <input type="radio" name="Discipline" id="Discipline" value="C" checked>
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" name="Discipline" id="Discipline">
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-8">
+                <table class="table-bordered table-striped" width="100%" border="1">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center">Percentage</th>
+                            <th style="text-align:center">Division</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:center">
+                                @if (Model.Performance != null)
+                                {
+                                    @Model.Performance.Percentage <p style="margin-top:-20px; margin-left:50px;">%</p>
+                                }
+
+                            </td>
+                            <td style="text-align:center">
+                                @if (Model.Performance != null)
+                                {
+                                    @Model.Performance.Division
+                                }
+                            </td>
+                           
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="text-align:right; margin-top:20px;">
+        <button type="button" class="btn " style="background-color:darkblue;color:white;font-weight:bold" onclick="CallPrint('strid')" data-ma-action="print">
+            <i class="mdi mdi-cloud-print"></i> Print
+        </button>
+    </div>
+
+    
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @section Scripts
+{
+        <script type="text/javascript">
+        $(function () {
+            var grade = "@totalGrade";
+            $("#TotalGrade").val(grade);
+
+            var percentage = "@percent";
+            $("#Percentage").val(percentage);
+            if (percentage > 60 && percentage <= 100) {
+                $("#Division").val("First Division");
+            }
+            else if (percentage > 40 && percentage <= 60) {
+                $("#Division").val("Second Division");
+            }
+            else if (percentage > 0 && percentage <= 40) {
+                $("#Division").val("Third Division");
+            }
+            else {
+                $("#Division").val("0");
+            }
+        });
+
+
+
+        function CallPrint(strid) {
+            var mywindow = document.getElementById('profile');
+            var popupWin = window.open('', "Kaamana Format", 'width=350,height=150,location=no,left=200px');
+            popupWin.document.open();
+            popupWin.document.write('<html><title>' + "" + '</title><link rel="stylesheet" type="text/css"  href="~/assets/css/bootstrap.min.css"  /></head><body onload="window.print()">')
+            popupWin.document.write('<html><title>' + "" + '</title><link rel="stylesheet" type="text/css" href="~/print.css" /></head><body onload="window.print()">')
+            popupWin.document.write(mywindow.innerHTML);
+            popupWin.document.write('</html>');
+            popupWin.document.close();
+        }
+
+        </script>
+    }

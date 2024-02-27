@@ -1,0 +1,63 @@
+﻿@model FiboSchool.Src.Dto.ManageMarksDto
+@{
+    ViewBag.Title = "_manageMarksPartialView";
+
+}
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="table">
+                <thead>
+                    <tr>
+                        <td>
+                            Student
+                        </td>
+                        <td>
+                            Full Marks
+                        </td>
+                        <td>
+                            Pass Marks
+                        </td>
+                        <td>
+                            Obtained Marks
+                        </td>
+                        <td>
+                            Highest Marks
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Students.Count() > 0)
+                    {
+                        for (int k = 0; k < Model.Students.Count(); k++)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="hidden" class="form-control" value="@Model.Students[k].Id" name="DetailDto[@k].StudentId" />
+                                    @Html.TextBox("StudentId", Model.Students[k].Name, new { @class = "form-control", @readonly = "true" })
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.DetailDto[k].FullMarks, new { @class = "form-control",@autocomplete="off" })
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.DetailDto[k].PassMarks, new { @class = "form-control" })
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.DetailDto[k].ObtainedMarks, new { @class = "form-control" })
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(x => x.DetailDto[k].HighestMarks, new { @class = "form-control" })
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

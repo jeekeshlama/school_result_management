@@ -1,0 +1,174 @@
+﻿@model FiboSchool.Src.ViewModel.ManageMarksViewModel
+
+@{
+
+    ViewBag.Title = "Index";
+    int SN = 1;
+
+
+    int countMale = 0;
+    int countFemale = 0;
+
+    var studentList = await _studentRepo.GetAllStudentAsync();
+
+    foreach (var male in studentList.Where(x => x.Gender == 1).ToList())
+    {
+        countMale++;
+    }
+    foreach (var male in studentList.Where(x => x.Gender == 2).ToList())
+    {
+        countFemale++;
+    }
+}
+@using FiboInfraStructure;
+@inject FiboSchool.InfraStructure.Repository.IStudentRepository _studentRepo;
+
+<style>
+    .piechart1 {
+        width: 309px !important;
+        height: 287px !important;
+        margin: 21px !important;
+        margin-left: 107px !important;
+        font: 600 !important
+    }
+</style>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="breadcome-list">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="breadcome-heading">
+                        <form role="search" class="sr-input-func">
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <ul class="breadcome-menu">
+                        <li>
+                            <a href="#">Home</a> <span class="bread-slash"><i class="fas fa-arrow-left"></i></span>
+                        </li>
+                        <li>
+                            <span class="bread-blod">DashBoard </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <div class="charts-single-pro responsive-mg-b-30" style="margin-left:90px;">
+        <div class="alert-title">
+            <h2>Total Students</h2>
+        </div>
+        <div id="pie-chart">
+            <canvas id="piechart" class="piechart1"></canvas>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <div class="charts-single-pro mg-t-30">
+        <div class="alert-title">
+            <h2>Calendar</h2>
+        </div>
+        <div id="doughnut-chart">
+            <script type="text/javascript">
+                                                 <!--
+                var nc_width = 540;
+                var nc_height = 185;
+                var nc_api_id = 66720220526215;
+                //-->
+            </script>
+            <script type="text/javascript" src="https://www.ashesh.com.np/calendarlink/nc.js"></script><div id="ncwidgetlink">@*Powered by © <a href="https://www.ashesh.com.np/nepali-calendar/" id="nclink" title="Nepali calendar" target="_blank">nepali calendar</a>*@</div>
+            <!-- End of nepali calendar widget -->
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script src="~/KiaalapMaster/js/charts/rounded-chart.js"></script>
+    <script type="text/javascript">
+
+  (function ($) {
+ "use strict";
+	var ctx = document.getElementById("piechart");
+	var piechart = new Chart(ctx, {
+		type: 'pie',
+		data: {
+			labels: ["Male", "Female"],
+			datasets: [{
+				label: 'pie Chart',
+                backgroundColor: [
+					'#303030',
+					'#933EC5',
+				],
+				data: [@countMale, @countFemale]
+            }]
+		},
+		options: {
+			responsive: true
+		}
+	});
+
+
+    })(jQuery);
+    </script>
+}
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+    'use strict';
+    $(window).on('load', function () {
+        function notify(message,type) {
+            $.growl({
+                message: message
+            }, {
+                type: type,
+                allow_dismiss: false,
+                label: 'Cancel',
+                className: 'btn-xs btn-inverse',
+                placement: {from: 'top', align: 'right'},
+                delay: 2500,
+                animate: { enter: 'animated rotateIn', exit: 'animated rotateIn'},
+                offset: {x: 30,y: 30}
+            });
+        };
+        notify('@ViewBag.Message','success');
+    });
+    </script>
+}
+
+
+
+@if (ViewBag.Messege != null)
+{
+    <script type="text/javascript">
+    'use strict';
+    $(window).on('load', function () {
+        function notify(messege,type) {
+            $.growl({
+                message: messege
+            }, {
+                type: type,
+                allow_dismiss: false,
+                label: 'Cancel',
+                className: 'btn-xs btn-inverse',
+                placement: {from: 'top', align: 'right'},
+                delay: 2500,
+                animate: { enter: 'animated rotateIn', exit: 'animated rotateIn'},
+                offset: {x: 30,y: 30}
+            });
+        };
+        notify('@ViewBag.Messege','danger');
+    });
+    </script>
+}
+
+
+

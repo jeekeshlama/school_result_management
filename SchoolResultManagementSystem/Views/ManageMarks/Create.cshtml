@@ -1,0 +1,138 @@
+﻿@model FiboSchool.Src.Dto.ManageMarksDto
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-left:90px; width:1100px;">
+        <div class="product-payment-inner-st">
+            <ul id="myTabedu1" class="tab-review-design">
+                <li class="active"><a href="#BasicDetails">Create Manage Marks</a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content custom-product-edit">
+                <div class="product-tab-list tab-pane fade active in" id="BasicDetails">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="review-content-section">
+                                <form class="form-horizontal form-material needs-validation" asp-action="Create" asp-controller="ManageMarks" method="post" novalidate>
+                                    @Html.AntiForgeryToken()
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="col-lg-2">
+                                                <label for="Staff">Select Session</label><br />
+                                                <select asp-for="SessionSetupId" asp-items="Model.SessionSetupList" class="form-control SessionSetupId" id="SessionSetupId" required>
+                                                    <option value="0">--Select Session--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <label for="Month">Term</label><br />
+                                                <select asp-for="TermId" asp-items="Model.TermList" class="form-control TermId" id="TermId" required>
+                                                    <option value="0">--Select Term--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <label for="Year">Select Class</label><br />
+                                                <select asp-for="ClassSetupId" asp-items="Model.ClassSetUpList" class="form-control ClassSetupId" id="ClassSetupId" required>
+                                                    <option value="0">--Select Class--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <label for="Year">Select Section</label><br />
+                                                <select asp-for="SectionSetupId" asp-items="Model.SectionSetupList" class="form-control SectionSetupId" id="SectionSetupId" required>
+                                                    <option value="0">--Select Section--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <label for="Year">Select Subject</label><br />
+                                                <select asp-for="SubjectId" asp-items="Model.SubjectList" class="form-control SubjectId" id="SubjectId" required></select>
+                                            </div>
+                                            <div class="col-lg-2" style="text-align:right">
+                                                <button type="submit" style="margin-top: 28px;" class="btn  btn-success" id="btnSubmit"><i class="feather mr-2 icon-check-square"></i>Submit</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row" id="Format">
+                                                    <div class="col-md-12">
+                                                        <div class="panel">
+                                                            <div class="panel-body report-content">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@section Scripts
+{
+    <script type="text/javascript">
+        //$(document).load(function () {
+        //    $(".ClassSetupId").change();
+        //});
+        $(".ClassSetupId").change(function () {
+            var classId = $('#ClassSetupId :selected').val();
+            var sectionId = $('#SectionSetupId :selected').val();
+            if (classId > 0 && sectionId > 0) {
+                $.ajax({
+                    method: 'get',
+                    url: '@Url.Action("getManageMarks")?id=' + classId + "&sectionId=" + sectionId,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $('.report-content').html(data.message);
+                    },
+                    error: function (data) {
+                    }
+                })
+            }
+        });
+        $(".SectionSetupId").change(function () {
+            var classId = $('#ClassSetupId :selected').val();
+            var sectionId = $('#SectionSetupId :selected').val();
+            if (classId > 0 && sectionId > 0) {
+                $.ajax({
+                    method: 'get',
+                    url: '@Url.Action("getManageMarks")?id=' + classId + "&sectionId=" + sectionId,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $('.report-content').html(data.message);
+                    },
+                    error: function (data) {
+                    }
+                })
+            }
+        });
+        $(".ClassSetupId").change(function () {
+            var classSetUpId = $("#ClassSetupId").val();
+            $.ajax({
+            data: { Id: classSetUpId },
+            dataType: "Json",
+            type: "GET",
+            url: '@Url.Action("LoadSubject", "ManageMarks")',
+                success: function (subjects) {
+                    $('.SubjectId').empty();
+                    let i = 0;
+                    for (var subject in subjects) {
+                        var html = '<option value="' + subjects[i].id + '">' + subjects[i].subjectName + '</option>';
+                        $('.SubjectId').append(html);
+                        i++;
+                    }
+                }
+            })
+        })
+    </script>
+}
+

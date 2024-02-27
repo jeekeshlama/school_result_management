@@ -1,0 +1,28 @@
+HTTrack3.49-2+htsswf+htsjava launched on Tue, 05 Oct 2021 13:00:31 at http://eliteadmin.themedesigner.in/demos/bt4/material/index3.html +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -qwC2%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "en, *" http://eliteadmin.themedesigner.in/demos/bt4/material/index3.html -O1 "T:\Templates\Elite Admin" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+13:02:43	Warning: 	Retry after error -4 (No data (connection closed)) at link eliteadmin.themedesigner.in/demos/bt4/assets/images/logo-light-text.png (from eliteadmin.themedesigner.in/demos/bt4/material/index3.html)
+13:02:43	Warning: 	Retry after error -4 (No data (connection closed)) at link eliteadmin.themedesigner.in/demos/bt4/assets/images/users/4.jpg (from eliteadmin.themedesigner.in/demos/bt4/material/index3.html)
+13:02:45	Warning: 	Retry after error -4 (No data (connection closed)) at link eliteadmin.themedesigner.in/demos/bt4/assets/images/big/img1.jpg (from eliteadmin.themedesigner.in/demos/bt4/material/index3.html)
+13:02:55	Warning: 	Retry after error -4 (No data (connection closed)) at link eliteadmin.themedesigner.in/demos/bt4/assets/images/big/img3.jpg (from eliteadmin.themedesigner.in/demos/bt4/material/index3.html)
+13:02:57	Warning: 	Retry after error -4 (No data (connection closed)) at link eliteadmin.themedesigner.in/demos/bt4/material/index2.html (from eliteadmin.themedesigner.in/demos/bt4/material/index3.html)
+13:06:09	Warning: 	Retry after error -4 (No data (connection closed)) at link eliteadmin.themedesigner.in/demos/bt4/assets/images/users/8.jpg (from eliteadmin.themedesigner.in/demos/bt4/material/index3.html)
+13:06:09	Warning: 	Retry after error -4 (No data (connection closed)) at link eliteadmin.themedesigner.in/demos/bt4/material/dist/js/perfect-scrollbar.jquery.min.js (from eliteadmin.themedesigner.in/demos/bt4/material/index3.html)
+13:06:09	Warning: 	Retry after error -4 (No data (connection closed)) at link eliteadmin.themedesigner.in/demos/bt4/material/dist/js/custom.min.js (from eliteadmin.themedesigner.in/demos/bt4/material/index3.html)
+13:06:10	Warning: 	Retry after error -4 (No data (connection closed)) at link eliteadmin.themedesigner.in/demos/bt4/material/dist/js/dashboard3.js (from eliteadmin.themedesigner.in/demos/bt4/material/index3.html)
+13:06:11	Warning: 	Retry after error -4 (No data (connection closed)) at link eliteadmin.themedesigner.in/demos/bt4/material/dist/css/fonts/fontawesome-webfont.ttf?v=4.7.0 (from eliteadmin.themedesigner.in/demos/bt4/material/dist/css/style.min.css)
+13:06:11	Warning: 	Retry after error -4 (No data (connection closed)) at link eliteadmin.themedesigner.in/demos/bt4/assets/images/big/img3.jpg (from eliteadmin.themedesigner.in/demos/bt4/material/index3.html)
+13:06:15	Error: 	"Not Found" (404) at link eliteadmin.themedesigner.in/demos/bt4/material/login.html (from eliteadmin.themedesigner.in/demos/bt4/material/ui-spinner.html)
+13:06:20	Error: 	"Not Found" (404) at link eliteadmin.themedesigner.in/demos/bt4/material/cropped.jpg (from eliteadmin.themedesigner.in/demos/bt4/material/form-img-cropper.html)
+13:06:23	Error: 	"Not Found" (404) at link eliteadmin.themedesigner.in/demos/bt4/assets/node_modules/datatables/media/js/dataTables.bootstrap.js (from eliteadmin.themedesigner.in/demos/bt4/material/table-editable-table.html)
+13:06:24	Error: 	"Not Found" (404) at link eliteadmin.themedesigner.in/demos/bt4/material/www.youtube.com/watch?v=sK7riqg2mr4 (from eliteadmin.themedesigner.in/demos/bt4/material/pages-lightbox-popup.html)
+13:06:24	Warning: 	Retry after error -4 (No data (connection closed)) at link eliteadmin.themedesigner.in/demos/bt4/assets/node_modules/ion-rangeslider/img/sprite-skin-modern.png (from eliteadmin.themedesigner.in/demos/bt4/assets/node_modules/ion-rangeslider/css/ion.rangeSlider.skinModern.css)
+13:06:43	Warning: 	Retry after error -4 (No data (connection closed)) at link eliteadmin.themedesigner.in/demos/bt4/assets/images/background/error-bg.jpg (from eliteadmin.themedesigner.in/demos/bt4/material/dist/css/pages/error-pages.css)
+
+HTTrack Website Copier/3.49-2 mirror complete in 6 minutes 14 seconds : 500 links scanned, 482 files written (24334667 bytes overall) [8139965 bytes received at 21764 bytes/sec], 22564917 bytes transferred using HTTP compression in 366 files, ratio 25%, 12.2 requests per connection
+(4 errors, 13 warnings, 0 messages)

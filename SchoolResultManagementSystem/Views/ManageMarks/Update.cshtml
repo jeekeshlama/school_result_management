@@ -1,0 +1,132 @@
+﻿@model FiboSchool.Src.Dto.ManageMarksDto
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject FiboSchool.InfraStructure.Repository.IStudentRepository _studentRepo;
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="product-payment-inner-st">
+            <ul id="myTabedu1" class="tab-review-design">
+                <li class="active"><a href="#BasicDetails">Update Manage Marks</a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content custom-product-edit">
+                <div class="product-tab-list tab-pane fade active in" id="BasicDetails">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="review-content-section">
+                                <form class="form-horizontal form-material needs-validation" asp-action="Update" asp-controller="ManageMarks" method="post" novalidate>
+                                    @Html.AntiForgeryToken()
+                                    @Html.HiddenFor(x => x.Id)
+                                    @Html.HiddenFor(x => x.CreatedDate)
+                                    @Html.HiddenFor(x => x.CreatedBy)
+                                    @Html.HiddenFor(x => x.FiscalYearId)
+                                    @Html.HiddenFor(x => x.BranchId)
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="col-lg-2">
+                                                <label for="Staff">Select Session</label><br />
+                                                <select asp-for="SessionSetupId" asp-items="Model.SessionSetupList" class="form-control SessionSetupId" id="SessionSetupId" required>
+                                                    <option value="0">--Select Session--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <label for="Month">Term</label><br />
+                                                <select asp-for="TermId" asp-items="Model.TermList" class="form-control TermId" id="TermId" required>
+                                                    <option value="0">--Select Term--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <label for="Year">Select Class</label><br />
+                                                <select asp-for="ClassSetupId" asp-items="Model.ClassSetUpList" class="form-control ClassSetupId" id="ClassSetupId" required>
+                                                    <option value="0">--Select Class--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <label for="Year">Select Section</label><br />
+                                                <select asp-for="SectionSetupId" asp-items="Model.SectionSetupList" class="form-control SectionSetupId" id="SectionSetupId" required>
+                                                    <option value="0">--Select Section--</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <label for="Year">Select Subject</label><br />
+                                                <select asp-for="SubjectId" asp-items="Model.SubjectList" class="form-control SubjectId" id="SubjectId" required></select>
+                                            </div>
+                                            <div class="col-lg-2" style="text-align:right">
+                                                <button type="submit" style="margin-top: 28px;" class="btn  btn-success" id="btnSubmit"><i class="feather mr-2 icon-check-square"></i>Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="col-lg-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row" id="Format">
+                                                    <div class="col-md-12">
+                                                        <table class="table table-bordered" id="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <td>
+                                                                        Student
+                                                                    </td>
+                                                                    <td>
+                                                                        Full Marks
+                                                                    </td>
+                                                                    <td>
+                                                                        Pass Marks
+                                                                    </td>
+                                                                    <td>
+                                                                        Obtained Marks
+                                                                    </td>
+                                                                    <td>
+                                                                        Highest Marks
+                                                                    </td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @if (Model.ManageMarksDetails.Count() > 0)
+                                                                {
+                                                                    for (int k = 0; k < Model.ManageMarksDetails.Count(); k++)
+                                                                    {
+                                                                        @Html.HiddenFor(x => x.ManageMarksDetails[k].Id)
+                                                                        @Html.HiddenFor(x => x.ManageMarksDetails[k].ManageMarksId)
+                                                                        @Html.HiddenFor(x => x.ManageMarksDetails[k].CreatedDate)
+                                                                        @Html.HiddenFor(x => x.ManageMarksDetails[k].CreatedBy)
+                                                                        @Html.HiddenFor(x => x.ManageMarksDetails[k].BranchId)
+                                                                        var student = await _studentRepo.GetByIdAsync((long)Model.ManageMarksDetails[k].StudentId);
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="hidden" class="form-control" value="@Model.ManageMarksDetails[k].StudentId" name="ManageMarksDetails[@k].StudentId" />
+                                                                                @Html.TextBox("StudentId", student.Name, new { @class = "form-control", @readonly = "true" })
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.TextBoxFor(x => x.ManageMarksDetails[k].FullMarks, new { @class = "form-control" })
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.TextBoxFor(x => x.ManageMarksDetails[k].PassMarks, new { @class = "form-control" })
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.TextBoxFor(x => x.ManageMarksDetails[k].ObtainedMarks, new { @class = "form-control" })
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.TextBoxFor(x => x.ManageMarksDetails[k].HighestMarks, new { @class = "form-control" })
+                                                                            </td>
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

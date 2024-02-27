@@ -1,0 +1,196 @@
+﻿@model FiboSchool.Src.Dto.StudentDto
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Update";
+}
+
+    
+           <form id="add-department" asp-action="Update" asp-controller="Student" method="post" class="add-department">
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="product-payment-inner-st">
+            <ul id="myTabedu1" class="tab-review-design">
+                <li class="active"><a href="#BasicDetails"> BasicDetails</a></li>
+                <li><a href="#AcademicDetails">Academic Details</a></li>
+                <li><a href="#GuardianDetails">Guardian Details</a></li>
+                <li><a href="#ContactDetails">Contact Details</a></li>
+            </ul>
+
+
+            <div id="myTabContent" class="tab-content custom-product-edit" style="width:1050px;">
+                <div class="product-tab-list tab-pane fade active in" id="BasicDetails">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="review-content-section">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Student's Name</label>
+                                                <input name="name" type="text" asp-for="Name" class="form-control" placeholder="Student's Name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Date Of Birth</label>
+                                                <input name="dateofbirth" type="text" asp-for="DateOfBirth" autocomplete="off" class="nepali-datepicker form-control" placeholder="Date Of Birth">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Nationality</label>
+                                                <input type="text" asp-for="Nationality" placeholder="Nationality" autocomplete="off" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Religion</label>
+                                                <input type="text" name="text" asp-for="Religion" type="text" placeholder="Religion" class="form-control" placeholder="Phone">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Gender</label>
+                                                <select asp-for="Gender" class="form-control">
+                                                    <option value="1">Male</option>
+                                                    <option value="2">Female</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Provience</label>
+                                                <select asp-for="ProvienceId" asp-items="Model.ProvienceList" placeholder="ProvienceList" class="form-control form-control-line">
+                                                    <option value="0">--Select Provience--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <label>District</label>
+                                                <select asp-for="DistrictId" asp-items="Model.DistrictList" placeholder="DistrictList" class="form-control form-control-line">
+                                                    <option value="0">--Select District--</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>WardNo</label>
+                                                <input type="text" asp-for="WardNo" placeholder="Ward Number" autocomplete="off" class="form-control form-control-line">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <label>LocalLevel</label>
+                                                <select asp-for="LocalLevelId" asp-items="Model.LocalLevelList" placeholder="LocalLevelList" class="form-control form-control-line">
+                                                    <option value="0">--Select LocalLevel--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-tab-list tab-pane fade" id="AcademicDetails">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="review-content-section">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label>Admission</label>
+                                            <input type="text" asp-for="Admission" placeholder="Admission" autocomplete="off" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Admission Date</label>
+                                            <input type="text" asp-for="AdmissionDate" autocomplete="off" placeholder="Admission Date" class="nepali-datepicker form-control">
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label>Section</label>
+                                            <select asp-for="SectionSetupId" asp-items="Model.SectionSetupList" class="form-control form-control-line">
+                                                <option value="0">--Select Section--</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Class</label>
+                                            <select asp-for="ClassSetupId" asp-items="Model.ClassSetUpList" class="form-control form-control-line">
+                                                <option value="0">--Select Class--</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-tab-list tab-pane fade" id="GuardianDetails">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="review-content-section">
+                                  <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label>Father Name</label>
+                                                <input type="text" asp-for="FatherName" placeholder="Father Name" autocomplete="off" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Father Occupation</label>
+                                                <input type="text" asp-for="FatherOccupation" placeholder="FatherOccupation" autocomplete="off" class="form-control">
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label>Mother Name</label>
+                                            <input type="text" asp-for="MotherName" placeholder="Mother Name" autocomplete="off" class="form-control form-control-line">
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Mother Occupation</label>
+                                            <input type="text" asp-for="MotherOccupation" placeholder="MotherOccupation" autocomplete="off" class="form-control form-control-line">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-tab-list tab-pane fade" id="ContactDetails">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="review-content-section">
+                                
+                                 <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label>MobileNumber</label>
+                                                <input type="text" asp-for="MobileNumber" placeholder="Mobile Number" autocomplete="off" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                                <input type="email" placeholder="Email" asp-for="Email" autocomplete="off" class="form-control">
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label>Address</label>
+                                                <input type="text" asp-for="Address" placeholder="Address" autocomplete="off" class="form-control">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="payment-adress"style="float:right">
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-check edu-checked-pro">Submit</i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                                    
+                                </form>

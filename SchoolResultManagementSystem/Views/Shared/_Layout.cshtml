@@ -1,0 +1,514 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+@inject Microsoft.AspNetCore.Identity.UserManager<FiboInfraStructure.Data.ApplicationUser> _userManager;
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using FiboUser.Constants
+@using FiboUser.Seeds
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>School Result Management System</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- favicon
+        ============================================ -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/KiaalapMaster/img/favicon.ico">
+    <!-- Google Fonts
+        ============================================ -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+    <!-- Bootstrap CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/css/bootstrap.min.css">
+    <!-- Bootstrap CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/css/font-awesome.min.css">
+    <!-- owl.carousel CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/css/owl.carousel.css">
+    <link rel="stylesheet" href="~/KiaalapMaster/css/owl.theme.css">
+    <link rel="stylesheet" href="~/KiaalapMaster/css/owl.transitions.css">
+    <!-- animate CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/css/animate.css">
+    <!-- normalize CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/css/normalize.css">
+    <!-- meanmenu icon CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/css/meanmenu.min.css">
+    <!-- main CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/css/main.css">
+    <!-- educate icon CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/css/educate-custon-icon.css">
+    <!-- morrisjs CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/css/morrisjs/morris.css">
+    <!-- mCustomScrollbar CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/css/scrollbar//jquery.mCustomScrollbar.min.css">
+
+    <!-- metisMenu CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/css/metisMenu/metisMenu.min.css">
+    <link rel="stylesheet" href="~/KiaalapMaster/css/metisMenu/metisMenu-vertical.css">
+    <!-- modals CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMastercss/modals.css">
+    <!-- style CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/style.css">
+    <!-- responsive CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/css/responsive.css">
+    <!-- forms CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/css/form/all-type-forms.css">
+    <!-- dropzone CSS
+        ============================================ -->
+    @*
+        <link rel="stylesheet" href="~/KiaalapMaster/css/dropzone/dropzone.css">*@
+    <link rel="stylesheet" href="~/KiaalapMaster/css/editor/select2.css">
+    <link rel="stylesheet" href="~/KiaalapMaster/css/editor/bootstrap-editable.css">
+    <link rel="stylesheet" href="~/KiaalapMaster/css/editor/x-editor-style.css">
+    <!-- normalize CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/css/data-table/bootstrap-table.css">
+    <link rel="stylesheet" href="~/KiaalapMaster/css/data-table/bootstrap-editable.css">
+    <!-- tabs CSS
+        ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMaster/css/tabs.css">
+    <!-- notifications CSS
+      ============================================ -->
+    <link rel="stylesheet" type="text/css" href="~/Community/html.phoenixcoded.net/mega-able/files/assets/pages/notification/notification.css" />
+    @* <link rel="stylesheet" href="~/KiaalapMastercss/notifications/Lobibox.min.css">
+        <link rel="stylesheet" href="~/KiaalapMastercss/notifications/notifications.css">*@
+    <!-- style CSS
+       ============================================ -->
+    <link rel="stylesheet" href="~/KiaalapMastercss/alerts.css">
+    <link rel="stylesheet" href="~/KiaalapMaster/css/educate-custon-icon.css">
+    <link rel="stylesheet" href="~/nepali.datepicker.v3.6 (1)/css/nepali.datepicker.v3.6.min.css" />
+    <link href="~/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/select2/dist/css/select2.min.css" rel="stylesheet" />
+    @* Online Font Awesone Costumize*@
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" />
+    <style>
+        .invalid input:required:invalid {
+            background: #BE4C54;
+        }
+
+        .invalid input:required:valid {
+            background: #17D654;
+        }
+
+        .invalid input:required:invalid {
+            background: #BE4C54;
+        }
+
+        .invalid input:required:valid {
+            background: #17D654;
+        }
+
+        .center-div {
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -150px;
+            margin-top: -150px;
+        }
+
+        .spinner {
+            position: fixed;
+            z-index: 999;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            background-color: Black;
+            filter: alpha(opacity=60);
+            opacity: 0.6;
+            -moz-opacity: 0.8;
+        }
+
+        .loader {
+            margin: auto;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #15a0ec;
+            border-bottom: 16px solid #15a0ec;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #444;
+            line-height: 15px !important;
+        }
+
+        .select2-container--open .select2-dropdown--below {
+            margin-left: 10px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 35px;
+            position: absolute;
+            top: 2px;
+            color: black;
+            right: -5px;
+            width: 20px;
+        }
+
+        .inner-div {
+            background-color: white;
+            border-radius: 15px;
+            margin: auto;
+            padding: 2%;
+            width: 150px;
+        }
+
+        .select2-container--default .select2-selection--single {
+            background-color: #fff;
+            border: 1px solid black;
+            border-radius: 4px;
+            width: 100%;
+            margin-left: 10px;
+            height: 35px;
+        }
+
+        .btn -success {
+            color: #fff;
+            background-color: #5cb85c;
+            border-color: #4cae4c;
+            border-radius: 0px;
+        }
+
+        .tableFixHead {
+            overflow: auto;
+            height: 700px;
+        }
+
+            .tableFixHead thead th {
+                position: sticky;
+                top: 0;
+                z-index: 1;
+            }
+    </style>
+    <!-- modernizr JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+
+<body>
+    <div class="left-sidebar-pro">
+        <nav id="sidebar" class="">
+            <div class="sidebar-header" style="height: 60px; width:240px;">
+                <a asp-action="index" asp-controller="Home"><img class="main-logo" src="~/SchoollogoD.png" style="height: 100%;" alt="" /></a>
+                <strong><a asp-action="index" asp-controller="Home"><img src="~/SchoollogoD.png" style="width:60px;" /></a></strong>
+            </div>
+            <div class="left-custom-menu-adp-wrap comment-scrollbar">
+                <nav class="sidebar-nav left-sidebar-menu-pro">
+                    <ul class="metismenu" id="menu1">
+                        <li>
+                            <a title="Home" class="has-arrow" asp-action="Index" asp-controller="Home">
+                                <span class="educate-icon educate-home icon-wrap"></span>
+                                <span class="mini-click-non">DashBoard</span>
+                            </a>
+                        </li>
+
+                        @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.OfficeIndex)).Result.Succeeded)
+                        {
+                            <li>
+                                {
+                                <a title="Address" class="has-arrow" href="mailbox.html" aria-expanded="false"><span class="educate-icon educate-apps icon-wrap"></span> <span class="mini-click-non">Office Setup</span></a>
+                                <ul class="submenu-angle app-mini-nb-dp" aria-expanded="false">
+
+                                    <li><a title="Office" asp-action="Index" asp-controller="Office"><span class="mini-sub-pro">Office</span></a></li>
+
+                                </ul>
+                            </li>
+                        } @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.StudentIndex)).Result.Succeeded)
+                        {
+                            <li>
+                                <a title="Manage Marks" class="has-arrow" href="all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Setup</span></a>
+                                <ul class="submenu-angle" aria-expanded="false">
+                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.OfficeIndex)).Result.Succeeded)
+                                    {
+                                        <li><a title="Office" asp-action="Index" asp-controller="School"><span class="mini-sub-pro">School</span></a></li>
+                                    } @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.SchoolIndex)).Result.Succeeded)
+                                    {
+                                        <li><a title="Office" asp-action="Index" asp-controller="ClassSetup"><span class="mini-sub-pro">Class</span></a></li>
+                                    }
+                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.SectionSetupIndex)).Result.Succeeded)
+                                    {
+                                        <li><a title="Office" asp-action="Index" asp-controller="SectionSetup"><span class="mini-sub-pro">Section</span></a></li>
+                                    }
+                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.StudentIndex)).Result.Succeeded)
+                                    {
+                                        <li><a title="Office" asp-action="Index" asp-controller="Student"><span class="mini-sub-pro">Student</span></a></li>
+                                    }
+                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.SessionIndex)).Result.Succeeded)
+                                    {
+                                        <li><a title="Office" asp-action="Index" asp-controller="Session"><span class="mini-sub-pro">Session</span></a></li>
+                                    }
+                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.SubjectIndex)).Result.Succeeded)
+                                    {
+                                        <li><a title="Office" asp-action="Index" asp-controller="Subject"><span class="mini-sub-pro">Subject</span></a></li>
+                                    }
+                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.TermIndex)).Result.Succeeded)
+                                    {
+                                        <li><a title="Office" asp-action="Index" asp-controller="Term"><span class="mini-sub-pro">Term</span></a></li>
+                                    }
+                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.TeacherIndex)).Result.Succeeded)
+                                    {
+                                        <li><a title="Office" asp-action="Index" asp-controller="Teacher"><span class="mini-sub-pro">Teacher</span></a></li>
+                                    }
+
+                                    <li><a title="Office" asp-action="Index" asp-controller="AssignTeacher"><span class="mini-sub-pro">Assign Teacher</span></a></li>
+
+                                </ul>
+                            </li>
+                        }
+                        @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.ProvienceIndex)).Result.Succeeded)
+                        {
+                            <li>
+                                <a title="Manage Marks" class="has-arrow" href="all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Address Setup</span></a>
+                                <ul class="submenu-angle" aria-expanded="false">
+                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.ProvienceIndex)).Result.Succeeded)
+                                    {
+                                        <li><a title="Provience" asp-action="Index" asp-controller="Provience"><span class="mini-sub-pro">Provience</span></a></li>
+                                    }
+                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.DistrictIndex)).Result.Succeeded)
+                                    {
+                                        <li><a title="District" asp-action="Index" asp-controller="District"><span class="mini-sub-pro">District</span></a></li>
+                                    }
+                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.LocalLevelIndex)).Result.Succeeded)
+                                    {
+                                        <li><a title="LocalLevel" asp-action="Index" asp-controller="LocalLevel"><span class="mini-sub-pro">LocalLevel</span></a></li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        <li>
+                            <a title="Manage Marks" class="has-arrow" href="all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Manage Marks</span></a>
+                            <ul class="submenu-angle" aria-expanded="false">
+                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.ManageMarksIndex)).Result.Succeeded)
+                                {
+                                    <li><a title="All  Manage Marks" asp-action="Index" asp-controller="ManageMarks"><span class="mini-sub-pro">All Manage Marks </span></a></li>
+                                }
+                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.ManageMarksCreate)).Result.Succeeded)
+                                {
+                                    <li><a title="Add  Manage Marks" asp-action="Create" asp-controller="ManageMarks"><span class="mini-sub-pro">Add Manage Marks </span></a></li>
+                                }
+                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.ManageMarksStudentManageMarks)).Result.Succeeded)
+                                {
+                                    <li><a title="Student Marks" asp-action="StudentManageMarks" asp-controller="ManageMarks"><span class="mini-sub-pro">Student Marks </span></a></li>
+                                }
+                            </ul>
+                        </li>
+                        @if ((AuthorizationService.AuthorizeAsync(User, Permissions.ApplicationPermission.ManageMarksIndex)).Result.Succeeded)
+                        {
+                            <li>
+                                <a title="Address" class="has-arrow" href="mailbox.html" aria-expanded="false"><span class="educate-icon educate-apps icon-wrap"></span> <span class="mini-click-non">User Setup</span></a>
+                                <ul class="submenu-angle app-mini-nb-dp" aria-expanded="false">
+
+                                    <li><a title="Account" asp-action="Index" asp-controller="Account"><span class="mini-sub-pro">User List</span></a></li>
+                                    <li><a title="Office" asp-action="Index" asp-controller="Roles"><span class="mini-sub-pro">User Role</span></a></li>
+                                    
+                                </ul>
+                            </li>
+                        }
+                        </ul>
+</nav>
+            </div>
+        </nav>
+    </div>
+    <!-- End Left menu area -->
+    <!-- Start Welcome area -->
+    <div class="all-content-wrapper">
+        <div class="header-advance-area">
+            <div class="header-top-area">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="header-top-wraper">
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-0 col-sm-1 col-xs-12">
+                                        <div class="menu-switcher-pro">
+                                            <button type="button" id="sidebarCollapse" class="btn bar-button-pro header-drl-controller-btn btn-info navbar-btn">
+                                                <i class="educate-icon educate-nav"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
+                                        <div class="header-top-menu tabl-d-n">
+                                            <ul class="nav navbar-nav mai-top-nav">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                                        <div class="header-right-info">
+                                            <ul class="nav navbar-nav mai-top-nav header-right-menu">
+                                                <li class="nav-item">
+                                                    <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
+                                                        <img src="img/product/pro4.jpg" alt="" />
+                                                        <span class="admin-name">@User.Identity.Name</span>
+                                                        <i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
+                                                    </a>
+                                                    <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
+
+                                                        <li>
+                                                            <a asp-action="Login" asp-controller="Account"><span class="edu-icon edu-locked author-log-ic"></span>Log Out</a>
+                                                            <a asp-action="Manage" asp-controller="Account">Change Password</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @RenderBody()
+        @*  <div class="footer-copyright-area">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="footer-copy-right">
+                                <p>©School Management System By Fibonacci Engineering & IT Solutions Pvt.Ltd. <a href="https://www.facebook.com/pages/category/Software-Company/Fibonaccci-Engineering-and-It-Solutions-Pvt-ltd-116479120183334/">Mechinagar-7,Itabhatta Jhapa Nepal.</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+    </div>
+    <!-- jquery
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/vendor/jquery-1.12.4.min.js"></script>
+
+    <!-- bootstrap JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/bootstrap.min.js"></script>
+    <!-- wow JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/wow.min.js"></script>
+    <!-- price-slider JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/jquery-price-slider.js"></script>
+    <!-- meanmenu JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/jquery.meanmenu.js"></script>
+    <script src="~/jquery-ui-1.13.1/jquery-ui-1.13.1/jquery-ui.js"></script>
+
+    <!-- owl.carousel JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/owl.carousel.min.js"></script>
+    <!-- sticky JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/jquery.sticky.js"></script>
+    <!-- scrollUp JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/jquery.scrollUp.min.js"></script>
+    <!-- counterup JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/counterup/jquery.counterup.min.js"></script>
+    <script src="~/KiaalapMaster/js/counterup/waypoints.min.js"></script>
+    <script src="~/KiaalapMaster/js/counterup/counterup-active.js"></script>
+    <!-- mCustomScrollbar JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="~/KiaalapMaster/js/scrollbar/mCustomScrollbar-active.js"></script>
+    <!-- metisMenu JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/metisMenu/metisMenu.min.js"></script>
+    <script src="~/KiaalapMaster/js/metisMenu/metisMenu-active.js"></script>
+    <!-- morrisjs JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/morrisjs/raphael-min.js"></script>
+    <script src="~/KiaalapMaster/js/morrisjs/morris.js"></script>
+    <script src="~/KiaalapMaster/js/morrisjs/morris-active.js"></script>
+    <!-- morrisjs JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/sparkline/jquery.sparkline.min.js"></script>
+    <script src="~/KiaalapMaster/js/sparkline/jquery.charts-sparkline.js"></script>
+    <script src="~/KiaalapMaster/js/sparkline/sparkline-active.js"></script>
+
+    <!-- plugins JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/plugins.js"></script>
+    <!-- main JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/main.js"></script>
+    <script src="~/KiaalapMaster/js/form-validation/jquery.form.min.js"></script>
+    <script src="~/KiaalapMaster/js/form-validation/jquery.validate.min.js"></script>
+    <script src="~/KiaalapMaster/js/form-validation/form-active.js"></script>
+    <!-- dropzone JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/dropzone/dropzone.js"></script>
+    <!-- maskedinput JS
+    ============================================ -->
+    <script src="~/KiaalapMaster/js/jquery.maskedinput.min.js"></script>
+    <script src="~/KiaalapMaster/js/masking-active.js"></script>
+    <!-- data table JS
+       ============================================ -->
+    <script src="~/KiaalapMaster/js/data-table/bootstrap-table.js"></script>
+    <script src="~/KiaalapMaster/js/data-table/tableExport.js"></script>
+    <script src="~/KiaalapMaster/js/data-table/data-table-active.js"></script>
+    <script src="~/KiaalapMaster/js/data-table/bootstrap-table-editable.js"></script>
+    <script src="~/KiaalapMaster/js/data-table/bootstrap-editable.js"></script>
+    <script src="~/KiaalapMaster/js/data-table/bootstrap-table-resizable.js"></script>
+    <script src="~/KiaalapMaster/js/data-table/colResizable-1.5.source.js"></script>
+    <script src="~/KiaalapMaster/js/data-table/bootstrap-table-export.js"></script>
+    <!--  editable JS ============================================ -->
+    <script src="~/KiaalapMaster/js/editable/jquery.mockjax.js"></script>
+    <script src="~/KiaalapMaster/js/editable/mock-active.js"></script>
+    <script src="~/KiaalapMaster/js/editable/select2.js"></script>
+    <script src="~/KiaalapMaster/js/editable/moment.min.js"></script>
+    <script src="~/KiaalapMaster/js/editable/xediable-active.js"></script>
+    @* <!-- notification JS ============================================ -->
+        <script src="~/KiaalapMaster/js/notifications/Lobibox.js"></script>
+        <script src="~/KiaalapMaster/js/notifications/notification-active.js"></script>*@
+    <!-- morrisjs JS============================================ -->
+    <script src="~/KiaalapMaster/js/sparkline/jquery.sparkline.min.js"></script>
+    <script src="~/KiaalapMaster/js/sparkline/jquery.charts-sparkline.js"></script>
+    <script src="~/KiaalapMaster/js/sparkline/sparkline-active.js"></script>
+    <script src="/nepali.datepicker.v3.6 (1)/js/nepali.datepicker.v3.6.min.js"></script>
+    <script src="~/select2/dist/js/select2.full.min.js"></script>
+    <script src="~/bootstrap-select/bootstrap-select.min.js"></script>
+
+    <!--Notification-->
+    <script src="~/Community/html.phoenixcoded.net/mega-able/files/assets/pages/notification/notification.js"></script>
+    <script src="~/Community/html.phoenixcoded.net/mega-able/files/assets/js/bootstrap-growl.min.js"></script>
+
+    <!-- Charts JS
+        ============================================ -->
+    <script src="~/KiaalapMaster/js/charts/Chart.js"></script>
+</body>
+</html>
+@RenderSection("Scripts", required: false)
+<script>
+    $(document).ready(function () {
+        var mainInput = document.getElementsByClassName("nepali-datepicker");
+        mainInput.nepaliDatePicker({
+            language: "english",
+            ndpYear: true,
+            ndpMonth: true,
+            ndpYearCount: 10
+        });
+    });
+    // For select 2
+    $(".select2").select2();
+</script>
+
+
